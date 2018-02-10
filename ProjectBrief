@@ -1,0 +1,13 @@
+Case Study – Tour of Britain (ToB) Reservation System Tour of Britain (ToB) is a new coach company that has started operations recently.  It intends to operate coach services to tourist attractions all over Britain.  It is primarily a members’ service, but non-members can have access to the service too. This requires a software system to be developed to handle their business. 
+ 
+The company currently deals directly with members by phone. To book a trip, a customer rings the Booking Operator who handles the reservation software system. If a customer is an existing member, the operator asks for the member’s ID number and uses this to look up details of the member’s account. For customers who are not members, the Operator asks them if they would like to join. If they decide to do so, the Operator asks them for their full details, which may include name, date of birth and contact information (such as mobile number or email address) and adds them to the system. There is a joining fee that is included in their first fare. If they do not want to join, the operator will make a non-member booking for which a surcharge is payable on top of the usual fare. 
+ 
+For all booking requests, the Operator takes details of the journey, the number of seats required and the date of the journey.  The operator then requests the system to search for journeys that fit the requirements.  If a tour is available, the Operator asks the member if he/she wants to make a booking. If they do, the operator enters the booking on the system. The journey details can also be looked up without making a booking.  The Operator can also cancel or change a booking for a member free of charge, but for non-members, there will be a charge for change or cancellation. 
+ 
+Each customer who books a trip is issued with a reference number that he/she can quote when arriving at the coach station.  The Check-In Clerk then verifies this booking through the system.  The Clerk will also be able to obtain a schedule of coach journeys for the day. 
+ 
+In addition, the Operation Manager at the company is responsible to maintain the information on system (such as adding a new coach service, amend or delete existing one). The Manager is also expected to be able to view weekly or monthly booking reports for business strategies and analysis. 
+ 
+The company is currently considering an online coach reservation system to expand their business and would also like the software team to develop additional features that would help them improve the running of their business.
+
+*Please note that you may make assumptions on the above case study where necessary.
