@@ -9,10 +9,27 @@ namespace TobReservationSystem.Controllers
 {
     public class CustomersController : Controller
     {
+
+        // declares a DbContext which allows access to a database
+        private ApplicationDbContext _context;
+
+        public CustomersController()
+        {
+            // initializes DbContext in the constructor
+            _context = new ApplicationDbContext();
+        }
+
+        // disposes the DbContext
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
         // GET: Customers
         public ViewResult Index()
         {
-            var customers = GetCustomers();
+            // gets all customers in the database, toList() executes the query
+            var customers = _context.Customers.ToList();
 
             return View(customers);
         }
@@ -20,24 +37,13 @@ namespace TobReservationSystem.Controllers
         // GET: Customers/Details/id
         public ActionResult Details(int id)
         {
-            var customer = GetCustomers().SingleOrDefault(c => c.Id == id);
+            // gets customers in the database and executes the query
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customer == null)
                 return HttpNotFound();
 
-                return View(customer);
-        }
-
-        public IEnumerable<Customer> GetCustomers()
-        {
-            var customers = new List<Customer>
-
-            {
-                new Customer { Id = 1, Name = "James Smith", Birthdate = new DateTime(1989, 3, 18) },
-                new Customer { Id = 2, Name = "Harry Anderson", Birthdate = new DateTime(1991, 11, 29) }
-            };
-
-            return customers;
+            return View(customer);
         }
     }
 }

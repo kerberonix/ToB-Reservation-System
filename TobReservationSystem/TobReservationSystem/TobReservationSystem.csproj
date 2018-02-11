@@ -200,8 +200,17 @@
     <Compile Include="Migrations\201802102019051_InitialModel.Designer.cs">
       <DependentUpon>201802102019051_InitialModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802111317328_AddCustomersTable.cs" />
+    <Compile Include="Migrations\201802111317328_AddCustomersTable.Designer.cs">
+      <DependentUpon>201802111317328_AddCustomersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802111325066_AddCoachJourneyTable.cs" />
+    <Compile Include="Migrations\201802111325066_AddCoachJourneyTable.Designer.cs">
+      <DependentUpon>201802111325066_AddCoachJourneyTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CoachJourney.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -288,6 +297,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201802102019051_InitialModel.resx">
       <DependentUpon>201802102019051_InitialModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802111317328_AddCustomersTable.resx">
+      <DependentUpon>201802111317328_AddCustomersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802111325066_AddCoachJourneyTable.resx">
+      <DependentUpon>201802111325066_AddCoachJourneyTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

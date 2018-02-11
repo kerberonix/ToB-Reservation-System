@@ -6,15 +6,18 @@ using System.Web;
 
 namespace TobReservationSystem.Models
 {
-    public class Customer
+    public class CoachJourney
     {
         public int Id { get; set; }
 
         [Required]
         [StringLength(255)]
-        public string Name { get; set; }
+        public string Destination { get; set; }
 
         [Required]
-        public DateTime Birthdate { get; set; }
+        public byte SeatsAvailable { get; set; }
+
+        [Required]
+        public DateTime DateOfJourney { get; set; }
     }
 }
