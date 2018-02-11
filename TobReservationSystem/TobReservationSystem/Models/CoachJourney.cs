@@ -19,5 +19,10 @@ namespace TobReservationSystem.Models
 
         [Required]
         public DateTime DateOfJourney { get; set; }
+
+        public DepartFromCenter DepartFromCenter { get; set; } // navigation property
+
+        public byte DepartFromCenterId { get; set; }
+
     }
 }

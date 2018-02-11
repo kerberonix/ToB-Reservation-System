@@ -209,11 +209,19 @@
     <Compile Include="Migrations\201802111325066_AddCoachJourneyTable.Designer.cs">
       <DependentUpon>201802111325066_AddCoachJourneyTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802111556218_AddDepartFromCenter.cs" />
+    <Compile Include="Migrations\201802111556218_AddDepartFromCenter.Designer.cs">
+      <DependentUpon>201802111556218_AddDepartFromCenter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802111558370_PopulateDepartFromCenters.cs" />
+    <Compile Include="Migrations\201802111558370_PopulateDepartFromCenters.Designer.cs">
+      <DependentUpon>201802111558370_PopulateDepartFromCenters.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CoachJourney.cs" />
     <Compile Include="Models\Customer.cs" />
-    <Compile Include="Models\DepartFromCenters.cs" />
+    <Compile Include="Models\DepartFromCenter.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -307,6 +315,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802111325066_AddCoachJourneyTable.resx">
       <DependentUpon>201802111325066_AddCoachJourneyTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802111556218_AddDepartFromCenter.resx">
+      <DependentUpon>201802111556218_AddDepartFromCenter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802111558370_PopulateDepartFromCenters.resx">
+      <DependentUpon>201802111558370_PopulateDepartFromCenters.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
