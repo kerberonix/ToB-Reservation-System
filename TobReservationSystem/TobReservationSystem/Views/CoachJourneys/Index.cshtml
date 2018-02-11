@@ -1,0 +1,26 @@
+﻿@model IEnumerable<TobReservationSystem.Models.CoachJourney>
+@{
+    ViewBag.Title = "Coach Journeys";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Coach Journeys</h2>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Destination</th>
+            <th>Date of Journey</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var journey in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(journey.Destination, "Details", "CoachJourneys", new { id = journey.Id }, null)</td>
+                <td>@journey.DateOfJourney.ToLongDateString()</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
