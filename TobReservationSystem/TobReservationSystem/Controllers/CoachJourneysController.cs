@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -37,7 +38,7 @@ namespace TobReservationSystem.Controllers
         public ActionResult Details(int id)
         {
             // gets coach journeys in the database and executes the query
-            var coachJourney = _context.CoachJourneys.SingleOrDefault(c => c.Id == id);
+            var coachJourney = _context.CoachJourneys.Include(c => c.DepartFromCenter).SingleOrDefault(c => c.Id == id);
 
             if (coachJourney == null)
                 return HttpNotFound();

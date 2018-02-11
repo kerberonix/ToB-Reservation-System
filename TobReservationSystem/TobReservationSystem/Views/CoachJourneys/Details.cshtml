@@ -4,4 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@Model.Destination</h2>
+<h2>Journey Details</h2>
+
+<ul>
+    <li>Destination: @Model.Destination</li>
+    <li>Date of Journey: @Model.DateOfJourney.ToLongDateString()</li>
+    <li>Seats Available: @Model.SeatsAvailable</li>
+    <li>Departing From: @Model.DepartFromCenter.Name</li>
+</ul>
