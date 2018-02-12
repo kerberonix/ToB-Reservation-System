@@ -6,11 +6,16 @@
 
 <h2>Coach Journeys</h2>
 
-<table class="table table-bordered table-hover">
+<p>
+    @Html.ActionLink("New", "New", "CoachJourneys", new { @class = "btn btn-primary" })
+</p>
+
+<table id="coachJourneys" class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>Destination</th>
             <th>Date of Journey</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -18,10 +23,10 @@
         @foreach (var journey in Model)
         {
             <tr>
-                <td>@Html.ActionLink(journey.Destination, "Details", "CoachJourneys", new { id = journey.Id }, null)</td>
+                <td>@Html.ActionLink(journey.Destination, "Edit", "CoachJourneys", new { id = journey.Id }, null)</td>
                 <td>@journey.DateOfJourney.ToLongDateString()</td>
+                <td>@Html.ActionLink("Delete", "Delete", "CoachJourneys", new { id = journey.Id }, null)</td>
             </tr>
         }
-
     </tbody>
 </table>

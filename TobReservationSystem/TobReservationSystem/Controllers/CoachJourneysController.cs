@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TobReservationSystem.Models;
+using TobReservationSystem.ViewModels;
 
 namespace TobReservationSystem.Controllers
 {
@@ -34,16 +35,86 @@ namespace TobReservationSystem.Controllers
             return View(coachJourneys);
         }
 
-        // GET: CoachJourneys/Details/id
-        public ActionResult Details(int id)
+        // GET: CoachJourneys/New
+        public ViewResult New()
         {
-            // gets coach journeys in the database and executes the query
-            var coachJourney = _context.CoachJourneys.Include(c => c.DepartFromCenter).SingleOrDefault(c => c.Id == id);
+            var departFromCenters = _context.DepartFromCenters.ToList();
+        
+            var viewModel = new CoachJourneyFormViewModel
+            {
+                DepartFromCenters = departFromCenters
+            };
 
-            if (coachJourney == null)
+            return View("CoachJourneyForm", viewModel);
+        }
+
+        // GET: CoachJourneys/Edit/2
+        public ActionResult Edit(int id)
+        {
+            // gets the coach journeys details by accessing it's id
+            var coachJourneyInDb = _context.CoachJourneys.SingleOrDefault(c => c.Id == id);
+
+            if (coachJourneyInDb == null)
                 return HttpNotFound();
 
-            return View(coachJourney);
+            // gets the list of departing from centers and executes the query
+            var departFromCenters = _context.DepartFromCenters.ToList();
+
+            var viewModel = new CoachJourneyFormViewModel
+            {
+                CoachJourney = coachJourneyInDb,
+                DepartFromCenters = departFromCenters
+            };
+            return View("CoachJourneyForm", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Save(CoachJourney coachJourney)
+        {
+            // a coach journey that does not exist will have a default Id of 0
+            if (coachJourney.Id == 0)
+                _context.CoachJourneys.Add(coachJourney);
+
+            else
+            {
+                // updates the properties in the database
+                var coachJourneyInDb = _context.CoachJourneys.Single(c => c.Id == coachJourney.Id);
+
+                coachJourneyInDb.Destination = coachJourney.Destination;
+                coachJourneyInDb.DateOfJourney = coachJourney.DateOfJourney;
+                coachJourneyInDb.SeatsAvailable = coachJourney.SeatsAvailable;
+                coachJourneyInDb.DepartFromCenterId = coachJourney.DepartFromCenterId;
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        // GET: /CoachJourneys/Delete/2
+        // returns a view of the coach journey, where a HttpPost submit (button) handles the deletion (see Delete.cshtml)
+        public ActionResult Delete(int id)
+        {
+            var coachJourneyInDb = _context.CoachJourneys.Include(c => c.DepartFromCenter).SingleOrDefault(c => c.Id == id);
+
+            if (coachJourneyInDb == null)
+            {
+                return HttpNotFound();
+            }
+            return View(coachJourneyInDb);
+        }
+
+        // POST: /CoachJourneys/Delete/2
+        // the action which peforms the actual deletion of the record
+        [HttpPost, ActionName("Delete")] // renams the action so routing works
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var coachJourneyInDb = _context.CoachJourneys.SingleOrDefault(c => c.Id == id);
+
+            _context.CoachJourneys.Remove(coachJourneyInDb);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }

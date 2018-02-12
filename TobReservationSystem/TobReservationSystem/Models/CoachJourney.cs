@@ -15,13 +15,16 @@ namespace TobReservationSystem.Models
         public string Destination { get; set; }
 
         [Required]
+        [Display(Name = "Seats Available")]
         public byte SeatsAvailable { get; set; }
 
         [Required]
+        [Display(Name = "Date of Journey")]
         public DateTime DateOfJourney { get; set; }
 
         public DepartFromCenter DepartFromCenter { get; set; } // navigation property
 
+        [Display(Name = "Departing From")]
         public byte DepartFromCenterId { get; set; }
 
     }
