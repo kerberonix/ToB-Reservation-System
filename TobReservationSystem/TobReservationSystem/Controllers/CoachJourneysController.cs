@@ -42,6 +42,7 @@ namespace TobReservationSystem.Controllers
         
             var viewModel = new CoachJourneyFormViewModel
             {
+                CoachJourney = new CoachJourney(),
                 DepartFromCenters = departFromCenters
             };
 
@@ -69,8 +70,20 @@ namespace TobReservationSystem.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(CoachJourney coachJourney)
         {
+            // validation check on the data entered
+            if (!ModelState.IsValid) // executes if data fails to meet validation requirements
+            {
+                var viewModel = new CoachJourneyFormViewModel
+                {
+                    CoachJourney = coachJourney,
+                    DepartFromCenters = _context.DepartFromCenters.ToList()
+                };
+
+                return View("CoachJourneyForm", viewModel);
+            }
             // a coach journey that does not exist will have a default Id of 0
             if (coachJourney.Id == 0)
                 _context.CoachJourneys.Add(coachJourney);

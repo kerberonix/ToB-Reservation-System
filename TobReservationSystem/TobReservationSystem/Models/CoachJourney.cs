@@ -16,6 +16,7 @@ namespace TobReservationSystem.Models
 
         [Required]
         [Display(Name = "Seats Available")]
+        [Range(1, 50)]
         public byte SeatsAvailable { get; set; }
 
         [Required]
