@@ -11,6 +11,7 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Membership Type</th>
             <th>Birthdate</th>
         </tr>
     </thead>
@@ -20,6 +21,7 @@
         {
          <tr>
              <td>@Html.ActionLink(customer.Name, "Details", "Customers", new { id = customer.Id}, null)</td>
+             <td>@customer.MembershipType.Name</td>
              <td>@customer.Birthdate.ToLongDateString()</td>
          </tr>
         }
