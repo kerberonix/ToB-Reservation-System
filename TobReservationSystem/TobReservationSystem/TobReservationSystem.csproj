@@ -217,6 +217,18 @@
     <Compile Include="Migrations\201802111558370_PopulateDepartFromCenters.Designer.cs">
       <DependentUpon>201802111558370_PopulateDepartFromCenters.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802211158215_MembershipType.cs" />
+    <Compile Include="Migrations\201802211158215_MembershipType.Designer.cs">
+      <DependentUpon>201802211158215_MembershipType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802211304515_UpdateMembershipTypeSignUpFee.cs" />
+    <Compile Include="Migrations\201802211304515_UpdateMembershipTypeSignUpFee.Designer.cs">
+      <DependentUpon>201802211304515_UpdateMembershipTypeSignUpFee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802211306264_PopulateMembershipType.cs" />
+    <Compile Include="Migrations\201802211306264_PopulateMembershipType.Designer.cs">
+      <DependentUpon>201802211306264_PopulateMembershipType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CoachJourney.cs" />
@@ -224,6 +236,7 @@
     <Compile Include="Models\DepartFromCenter.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MembershipType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\CoachJourneyFormViewModel.cs" />
@@ -323,6 +336,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802111558370_PopulateDepartFromCenters.resx">
       <DependentUpon>201802111558370_PopulateDepartFromCenters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802211158215_MembershipType.resx">
+      <DependentUpon>201802211158215_MembershipType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802211304515_UpdateMembershipTypeSignUpFee.resx">
+      <DependentUpon>201802211304515_UpdateMembershipTypeSignUpFee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802211306264_PopulateMembershipType.resx">
+      <DependentUpon>201802211306264_PopulateMembershipType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

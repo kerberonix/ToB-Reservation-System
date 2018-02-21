@@ -6,18 +6,17 @@ using System.Web;
 
 namespace TobReservationSystem.Models
 {
-    public class Customer
+    public class MembershipType
     {
-        public int Id { get; set; }
+        public byte Id { get; set; }
 
         [Required]
         [StringLength(255)]
         public string Name { get; set; }
 
-        [Required]
-        public DateTime Birthdate { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal SignUpFee { get; set; }
 
-        public MembershipType MembershipType { get; set; } // navigation property
-        public byte MembershipTypeId { get; set; }
+        public byte DurationInMonths { get; set; }
     }
 }
