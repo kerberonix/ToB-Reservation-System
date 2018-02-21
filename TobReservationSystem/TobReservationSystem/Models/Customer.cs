@@ -18,6 +18,8 @@ namespace TobReservationSystem.Models
         public DateTime Birthdate { get; set; }
 
         public MembershipType MembershipType { get; set; } // navigation property
+
+        [Display(Name = "Membership Type")]
         public byte MembershipTypeId { get; set; }
     }
 }

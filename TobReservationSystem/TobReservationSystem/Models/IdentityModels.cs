@@ -23,6 +23,7 @@ namespace TobReservationSystem.Models
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CoachJourney> CoachJourneys { get; set; }
         public DbSet<DepartFromCenter> DepartFromCenters { get; set; }
+        public DbSet<MembershipType> MembershipTypes { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
