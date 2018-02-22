@@ -42,6 +42,7 @@ namespace TobReservationSystem.Controllers
 
             var viewModel = new CustomerFormViewModel
             {
+                Customer = new Customer(),
                 MembershipTypes = membershipTypes
             };
 
@@ -70,8 +71,22 @@ namespace TobReservationSystem.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)
         {
+            // validation check on the data entered
+            if (!ModelState.IsValid) // executes if data fails to meet validation requirements
+            {
+                // if the validation fails we need to return the data which was entered before validation was checked back into the form
+                var viewModel = new CustomerFormViewModel
+                {
+                    Customer = customer,
+                    MembershipTypes = _context.MembershipTypes.ToList()
+                };
+
+                return View("CustomerForm", viewModel);
+            }
+
             // a customer that does not exist will have a default Id of 0
             if (customer.Id == 0)
                 _context.Customers.Add(customer);
