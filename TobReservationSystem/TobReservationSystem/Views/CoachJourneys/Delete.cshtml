@@ -9,18 +9,23 @@
 @using (Html.BeginForm())
 {
     <div class="form-group">
-        @Html.DisplayFor(m => m.Destination)
+        @Html.LabelFor(m => m.Destination)
+        @Html.EditorFor(m => m.Destination, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
     </div>
     <div class="form-group">
-        @Html.DisplayFor(m => m.DateOfJourney)
+        @Html.LabelFor(m => m.DateOfJourney)
+        @Html.EditorFor(m => m.DateOfJourney, new { htmlAttributes = new { @readonly = "readonly", @Value = Model.DateOfJourney.ToString("d MMM yyyy"), @class = "form-control" } })
     </div>
     <div class="form-group">
-        @Html.DisplayFor(m => m.DepartFromCenter.Name)
+        @Html.LabelFor(m => m.DepartFromCenterId)
+        @Html.EditorFor(m => m.DepartFromCenter.Name, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
     </div>
     <div class="form-group">
-        @Html.DisplayFor(m => m.SeatsAvailable)
+        @Html.LabelFor(m => m.SeatsAvailable)
+        @Html.EditorFor(m => m.SeatsAvailable, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
     </div>
     @Html.HiddenFor(m => m.Id)
     <button type="submit" class="btn btn-primary">Delete</button>
 }
+
 

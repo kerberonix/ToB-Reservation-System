@@ -9,13 +9,16 @@
 @using (Html.BeginForm())
 {
     <div class="form-group">
-        Name: @Html.DisplayFor(m => m.Name)
+        @Html.LabelFor(m => m.Name)
+        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
     </div>
     <div class="form-group">
-        Birthdate: @Html.DisplayFor(m => m.Birthdate)
+        @Html.LabelFor(m => m.Birthdate)
+        @Html.EditorFor(m => m.Birthdate, new { htmlAttributes = new { @readonly = "readonly", @Value = Model.Birthdate.ToString("d MMM yyyy"), @class = "form-control" } })
     </div>
     <div class="form-group">
-        Membership Type: @Html.DisplayFor(m => m.MembershipType.Name)
+        @Html.LabelFor(m => m.MembershipTypeId)
+       @Html.EditorFor(m => m.MembershipType.Name, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
     </div>
 
     <!-- Hidden Fields -->
