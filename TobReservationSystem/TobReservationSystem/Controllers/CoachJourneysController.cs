@@ -42,7 +42,6 @@ namespace TobReservationSystem.Controllers
         
             var viewModel = new CoachJourneyFormViewModel
             {
-                CoachJourney = new CoachJourney(),
                 DepartFromCenters = departFromCenters
             };
 
