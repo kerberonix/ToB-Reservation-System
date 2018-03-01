@@ -68,6 +68,7 @@ namespace TobReservationSystem.Controllers
             return View("CoachJourneyForm", viewModel);
         }
 
+        // POST: new record / update existing record
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Save(CoachJourney coachJourney)
@@ -85,7 +86,11 @@ namespace TobReservationSystem.Controllers
             }
             // a coach journey that does not exist will have a default Id of 0
             if (coachJourney.Id == 0)
+            {
+                coachJourney.TicketsAvailable = coachJourney.TotalNumberOfTickets;
                 _context.CoachJourneys.Add(coachJourney);
+
+            }
 
             else
             {
@@ -94,7 +99,7 @@ namespace TobReservationSystem.Controllers
 
                 coachJourneyInDb.Destination = coachJourney.Destination;
                 coachJourneyInDb.DateOfJourney = coachJourney.DateOfJourney;
-                coachJourneyInDb.SeatsAvailable = coachJourney.SeatsAvailable;
+                coachJourneyInDb.TotalNumberOfTickets = coachJourney.TotalNumberOfTickets;
                 coachJourneyInDb.DepartFromCenterId = coachJourney.DepartFromCenterId;
             }
 
@@ -118,7 +123,7 @@ namespace TobReservationSystem.Controllers
 
         // POST: /CoachJourneys/Delete/2
         // the action which peforms the actual deletion of the record
-        [HttpPost, ActionName("Delete")] // renams the action so routing works
+        [HttpPost, ActionName("Delete")] // renames the action so routing works
         public ActionResult DeleteConfirmed(int id)
         {
             var coachJourneyInDb = _context.CoachJourneys.SingleOrDefault(c => c.Id == id);

@@ -1,0 +1,27 @@
+﻿@model TobReservationSystem.ViewModels.BookingFormViewModel
+
+@{
+
+    ViewBag.Title = "BookingForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Make Booking</h2>
+
+@using (Html.BeginForm("CreateNewBooking", "Bookings"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.CoachJourney.Destination)
+        @Html.EditorFor(m => m.CoachJourney.Destination, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Customer.Id)
+        @Html.TextBoxFor(m => m.Customer.Id, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CoachJourney.TicketsAvailable)
+        @Html.DropDownListFor(m => m.CoachJourney.TicketsAvailable, Enumerable.Range(1, 10).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+    </div>
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+}

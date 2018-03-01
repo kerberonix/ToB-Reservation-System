@@ -26,9 +26,9 @@
         @Html.ValidationMessageFor(m => m.CoachJourney.DateOfJourney)
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.CoachJourney.SeatsAvailable)
-        @Html.TextBoxFor(m => m.CoachJourney.SeatsAvailable, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.CoachJourney.SeatsAvailable)
+        @Html.LabelFor(m => m.CoachJourney.TotalNumberOfTickets)
+        @Html.TextBoxFor(m => m.CoachJourney.TotalNumberOfTickets, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CoachJourney.TotalNumberOfTickets)
     </div>
     <!-- Hidden Fields -->
     @Html.Hidden("CoachJourney.Id", (Model.CoachJourney != null) ? Model.CoachJourney.Id : 0)

@@ -15,9 +15,11 @@ namespace TobReservationSystem.Models
         public string Destination { get; set; }
 
         [Required]
-        [Display(Name = "Seats Available")]
         [Range(1, 50)]
-        public byte SeatsAvailable { get; set; }
+        public int TotalNumberOfTickets { get; set; }
+
+        [Display(Name = "Number of Tickets")]
+        public int TicketsAvailable { get; set; }
 
         [Required]
         [Display(Name = "Date of Journey")]

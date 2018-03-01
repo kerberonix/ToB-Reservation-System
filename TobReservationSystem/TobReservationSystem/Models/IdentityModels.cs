@@ -24,6 +24,7 @@ namespace TobReservationSystem.Models
         public DbSet<CoachJourney> CoachJourneys { get; set; }
         public DbSet<DepartFromCenter> DepartFromCenters { get; set; }
         public DbSet<MembershipType> MembershipTypes { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
