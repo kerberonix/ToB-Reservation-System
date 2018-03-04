@@ -25,53 +25,53 @@ namespace TobReservationSystem.Controllers
             _context.Dispose();
         }
 
-            // GET: /Bookings/CreateNewBooking/1
-            // returns a view of the booking form (see BookingForm.cshtml)
-            public ActionResult CreateNewBooking(int id)
+        // GET: /Bookings/CreateNewBooking/1
+        // returns a view of the booking form (see BookingForm.cshtml)
+        public ActionResult CreateNewBooking(int id)
+        {
+            // gets the journey from the Db that a booking is being made to
+            var coachJourneyInDb = _context.CoachJourneys.SingleOrDefault(c => c.Id == id);
+
+            if (coachJourneyInDb == null)
+                return HttpNotFound();
+
+            // We don't need to pass the customer in the viewModel here, as we have not specified what customer we want to make a booking for yet
+            var viewModel = new BookingFormViewModel
             {
-                // gets the journey from the Db that a booking is being made to
-                var coachJourneyInDb = _context.CoachJourneys.SingleOrDefault(c => c.Id == id);
+                CoachJourneyId = coachJourneyInDb.Id,
+                Destination = coachJourneyInDb.Destination,
+                TicketQuantity = coachJourneyInDb.TicketsAvailable
+            };
 
-                if (coachJourneyInDb == null)
-                    return HttpNotFound();
+            return View("BookingForm", viewModel);
+        }
 
-                // We don't need to pass the customer in the viewModel here, as we have not specified what customer we want to make a booking for yet
-                var viewModel = new BookingFormViewModel
-                {
-                    CoachJourneyId = coachJourneyInDb.Id,
-                    Destination = coachJourneyInDb.Destination,
-                    TicketQuantity = coachJourneyInDb.TicketsAvailable
-                };
+        // POST: /Bookings/CreateNewBooking/1
+        // the action which peforms the actual POST request to add a new booking to the database (performed when submit button is pressed)
+        [HttpPost, ActionName("CreateNewBooking")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateBooking(BookingFormViewModel newBooking)
+        {
+            // matches the coachJourney a customer wants to make a booking for to the corresponding coachJourney stored in the Db
+            var coachJourney = _context.CoachJourneys.Single(c => c.Id == newBooking.CoachJourneyId);
 
-                return View("BookingForm", viewModel);  
-            }
-
-            // POST: /Bookings/CreateNewBooking/1
-            // the action which peforms the actual POST request to add a new booking to the database (performed when submit button is pressed)
-            [HttpPost, ActionName("CreateNewBooking")]
-            [ValidateAntiForgeryToken]
-            public ActionResult CreateBooking(BookingFormViewModel newBooking)
-            {
-                // matches the coachJourney a customer wants to make a booking for to the corresponding coachJourney stored in the Db
-                var coachJourney = _context.CoachJourneys.Single(c => c.Id == newBooking.CoachJourneyId);
-
-                // matches the customer Id provided in the POST request (in the input text box) to the corresponding customer stored in the Db
-                var customer = _context.Customers.SingleOrDefault(c => c.Id == newBooking.CustomerId);
+            // matches the customer Id provided in the POST request (in the input text box) to the corresponding customer stored in the Db
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == newBooking.CustomerId);
 
             if (!ModelState.IsValid) // code executed if validation check fails
+            {
+                // resets the data on the view
+                // mapping the view model properties to the model properties
+                var viewModel = new BookingFormViewModel
                 {
-                    // resets the data on the view
-                    // mapping the view model properties to the model properties
-                    var viewModel = new BookingFormViewModel
-                    {
-                        CoachJourneyId = coachJourney.Id,
-                        CustomerId = 0,
-                        Destination = coachJourney.Destination,
-                        TicketQuantity = coachJourney.TicketsAvailable
-                    };
-                    return View("BookingForm", viewModel);
+                    CoachJourneyId = coachJourney.Id,
+                    CustomerId = 0,
+                    Destination = coachJourney.Destination,
+                    TicketQuantity = coachJourney.TicketsAvailable
+                };
+                return View("BookingForm", viewModel);
 
-                }
+            }
 
             if (customer == null)
             {
@@ -92,13 +92,11 @@ namespace TobReservationSystem.Controllers
                 // deduct number of tickets bought from number of tickets available
                 coachJourney.TicketsAvailable -= newBooking.TicketQuantity;
 
-                // if everytihng was successful, add the booking to the Db
+                // if everything was successful, add the booking to the Db
                 var booking = new Booking
                 {
-                    // we only need to add the Id's of the customer and coach journey, not the whole objects
-                    // as the bookings table doesn't contain any other properties from the customer or coach journey tables
-                    CustomerId = customer.Id,
-                    CoachJourneyId = coachJourney.Id,
+                    CustomerId = newBooking.CustomerId,
+                    CoachJourneyId = newBooking.CoachJourneyId,
                     DateOfBooking = DateTime.Now,
                     TicketQuantity = newBooking.TicketQuantity
                 };
@@ -108,7 +106,7 @@ namespace TobReservationSystem.Controllers
 
                 return RedirectToAction("Index", "CoachJourneys");
             }
-            
-            }
+
         }
+    }
 }
