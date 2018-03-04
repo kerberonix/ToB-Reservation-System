@@ -10,10 +10,8 @@ namespace TobReservationSystem.Models
     {
         public int Id { get; set; }
 
-        [Required]
         public DateTime DateOfBooking { get; set; }
 
-        [Required]
         public int TicketQuantity { get; set; }
 
         public int CustomerId { get; set; }

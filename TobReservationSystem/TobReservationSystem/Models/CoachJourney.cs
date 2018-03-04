@@ -16,6 +16,7 @@ namespace TobReservationSystem.Models
 
         [Required]
         [Range(1, 50)]
+        [Display(Name = "Total Number of Tickets")]
         public int TotalNumberOfTickets { get; set; }
 
         [Display(Name = "Number of Tickets")]

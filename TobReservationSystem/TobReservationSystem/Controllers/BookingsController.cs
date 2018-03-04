@@ -25,61 +25,90 @@ namespace TobReservationSystem.Controllers
             _context.Dispose();
         }
 
-        // GET: /Bookings/CreateNewBooking/1
-        // returns a view of the booking form, where a HttpPost submit (button) POSTS the data to the database (see BookingForm.cshtml)
-        public ActionResult CreateNewBooking(int id)
-        {
-            // gets the journey from the Db that a booking is being made to
-            var coachJourneyInDb = _context.CoachJourneys.SingleOrDefault(c => c.Id == id);
-
-            if (coachJourneyInDb == null)
-                return HttpNotFound();
-
-            // We don't need to pass the customer in the viewModel here, as we have not specified what customer we want to make a booking for yet
-            var viewModel = new BookingFormViewModel
+            // GET: /Bookings/CreateNewBooking/1
+            // returns a view of the booking form (see BookingForm.cshtml)
+            public ActionResult CreateNewBooking(int id)
             {
-                CoachJourney = coachJourneyInDb
-            };
+                // gets the journey from the Db that a booking is being made to
+                var coachJourneyInDb = _context.CoachJourneys.SingleOrDefault(c => c.Id == id);
 
-            return View("BookingForm", viewModel);  
-        }
+                if (coachJourneyInDb == null)
+                    return HttpNotFound();
 
-        // POST: /Bookings/CreateNewBooking/1
-        // the action which peforms the actual POST request to add a new booking to the database
-        [HttpPost, ActionName("CreateNewBooking")]
-        [ValidateAntiForgeryToken]
-        public ActionResult CreateBooking(Booking newBooking)
-        {
-            // matches the coachJourney a customer wants to make a booking for to the corresponding coachJourney stored in the Db
-            var coachJourney = _context.CoachJourneys.Single(c => c.Id == newBooking.Id);
+                // We don't need to pass the customer in the viewModel here, as we have not specified what customer we want to make a booking for yet
+                var viewModel = new BookingFormViewModel
+                {
+                    CoachJourneyId = coachJourneyInDb.Id,
+                    Destination = coachJourneyInDb.Destination,
+                    TicketQuantity = coachJourneyInDb.TicketsAvailable
+                };
 
-            // matches the customer Id provided in the POST request (in the input text box) to the corresponding customer stored in the Db
-            var customer = _context.Customers.Single(c => c.Id == newBooking.Customer.Id);
+                return View("BookingForm", viewModel);  
+            }
 
-            // *Code block to manage ticket availability*
-            // when there are no tickets left
-            if (coachJourney.TicketsAvailable == 0)
-                return Content("There are no tickets left.");
-
-            // when more tickets are attempted to be bought than are available
-            else if (coachJourney.TicketsAvailable < newBooking.CoachJourney.TicketsAvailable)
-                return Content("There are only " + coachJourney.TicketsAvailable + " tickets left, buy less.");
-
-            // deduct number of tickets bought from number of tickets available
-            coachJourney.TicketsAvailable -= newBooking.CoachJourney.TicketsAvailable;
-
-            var booking = new Booking
+            // POST: /Bookings/CreateNewBooking/1
+            // the action which peforms the actual POST request to add a new booking to the database (performed when submit button is pressed)
+            [HttpPost, ActionName("CreateNewBooking")]
+            [ValidateAntiForgeryToken]
+            public ActionResult CreateBooking(BookingFormViewModel newBooking)
             {
-                Customer = customer,
-                CoachJourney = coachJourney,
-                DateOfBooking = DateTime.Now,
-                TicketQuantity = newBooking.CoachJourney.TicketsAvailable
-            };
+                // matches the coachJourney a customer wants to make a booking for to the corresponding coachJourney stored in the Db
+                var coachJourney = _context.CoachJourneys.Single(c => c.Id == newBooking.CoachJourneyId);
 
-            _context.Bookings.Add(booking);
-            _context.SaveChanges();
+                // matches the customer Id provided in the POST request (in the input text box) to the corresponding customer stored in the Db
+                var customer = _context.Customers.SingleOrDefault(c => c.Id == newBooking.CustomerId);
 
-            return RedirectToAction("Index", "CoachJourneys");
+            if (!ModelState.IsValid) // code executed if validation check fails
+                {
+                    // resets the data on the view
+                    // mapping the view model properties to the model properties
+                    var viewModel = new BookingFormViewModel
+                    {
+                        CoachJourneyId = coachJourney.Id,
+                        CustomerId = 0,
+                        Destination = coachJourney.Destination,
+                        TicketQuantity = coachJourney.TicketsAvailable
+                    };
+                    return View("BookingForm", viewModel);
+
+                }
+
+            if (customer == null)
+            {
+                return Content("That customer Id does not exist.");
+            }
+
+            else
+            {
+                // *Code block to manage ticket availability*
+                // when there are no tickets left
+                if (coachJourney.TicketsAvailable == 0)
+                    return Content("There are no tickets left.");
+
+                // when more tickets are attempted to be bought than are available
+                else if (coachJourney.TicketsAvailable < newBooking.TicketQuantity)
+                    return Content("There are only " + coachJourney.TicketsAvailable + " tickets left, buy less.");
+
+                // deduct number of tickets bought from number of tickets available
+                coachJourney.TicketsAvailable -= newBooking.TicketQuantity;
+
+                // if everytihng was successful, add the booking to the Db
+                var booking = new Booking
+                {
+                    // we only need to add the Id's of the customer and coach journey, not the whole objects
+                    // as the bookings table doesn't contain any other properties from the customer or coach journey tables
+                    CustomerId = customer.Id,
+                    CoachJourneyId = coachJourney.Id,
+                    DateOfBooking = DateTime.Now,
+                    TicketQuantity = newBooking.TicketQuantity
+                };
+
+                _context.Bookings.Add(booking);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "CoachJourneys");
+            }
+            
+            }
         }
-    }
 }
