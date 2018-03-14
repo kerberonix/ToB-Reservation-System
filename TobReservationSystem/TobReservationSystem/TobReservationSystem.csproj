@@ -258,6 +258,7 @@
     <Compile Include="Models\MembershipType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\BookingDetailsFormViewModel.cs" />
     <Compile Include="ViewModels\BookingFormViewModel.cs" />
     <Compile Include="ViewModels\CoachJourneyFormViewModel.cs" />
     <Compile Include="ViewModels\CustomerFormViewModel.cs" />
@@ -329,6 +330,8 @@
     <Content Include="Views\Customers\CustomerForm.cshtml" />
     <Content Include="Views\Customers\Delete.cshtml" />
     <Content Include="Views\Bookings\BookingForm.cshtml" />
+    <Content Include="Views\Bookings\Index.cshtml" />
+    <Content Include="Views\Bookings\BookingDetailsForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

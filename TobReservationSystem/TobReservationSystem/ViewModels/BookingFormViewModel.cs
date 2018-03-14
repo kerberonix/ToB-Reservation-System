@@ -11,15 +11,23 @@ namespace TobReservationSystem.ViewModels
     {
         public int CoachJourneyId { get; set; }
 
-        [Required]
         [Display(Name = "Customer Id")]
         public int CustomerId { get; set; }
 
         public string Destination { get; set; }
 
-        [Required]
+        // this validation rule seems unable to be retrieved from the model so im setting it in the view model
         [Range(1, 10)]
         [Display(Name = "Ticket Quantity")]
         public int TicketQuantity { get; set; }
+
+        [Display(Name = "Departing From")]
+        public string DepartFromCenter { get; set; }
+
+
+        public int DeductTickets(CoachJourney coachJourney)
+        {
+            return coachJourney.TicketsAvailable -= TicketQuantity;
+        }
     }
 }

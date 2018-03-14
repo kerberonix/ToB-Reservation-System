@@ -1,0 +1,63 @@
+﻿@model TobReservationSystem.ViewModels.BookingDetailsFormViewModel
+
+@{
+    ViewBag.Title = "Booking Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Booking Details</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Please fix the following errors.")
+    <div class="booking-details-container">
+        @Html.LabelFor(m => m.Destination)
+        @Html.DisplayFor(m => m.Destination)
+        @Html.LabelFor(m => m.DepartFromCenter)
+        @Html.DisplayFor(m => m.DepartFromCenter)
+        @Html.LabelFor(m => m.DateOfJourney)
+        @Html.DisplayFor(m => m.DateOfJourney)
+        @Html.LabelFor(m => m.CustomerId)
+        @Html.DisplayFor(m => m.CustomerId)
+        @Html.LabelFor(m => m.CustomerName)
+        @Html.DisplayFor(m => m.CustomerName)
+        @Html.LabelFor(m => m.DateOfBooking)
+        @Html.DisplayFor(m => m.DateOfBooking)
+    </div>
+    <div class="booking-details-container">
+        @Html.LabelFor(m => m.TicketsAvailable)
+        @Html.DisplayFor(m => m.TicketsAvailable)
+    </div>
+    <div class="form-group form-space">
+        @Html.LabelFor(m => m.TicketQuantity)
+        @Html.DropDownListFor(m => m.TicketQuantity, Enumerable.Range(1, 10).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.TicketQuantity)
+    </div>
+    <!-- Hidden Fields -->
+    @Html.HiddenFor(c => c.Id)
+    @Html.AntiForgeryToken();
+
+    <button type="submit" id="save" class="btn btn-primary">Save</button>
+    <button type="submit" id="delete" class="btn btn-primary">Delete</button>
+}
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- * Code to handle the submit button requests *
+        determines which action should be called depending on the button clicked -->
+    <script>
+        $(document).ready(function () {
+
+            $("#save").click(function () {
+                $("form").attr("action", "/Bookings/SaveBooking");
+            });
+
+            $("#delete").click(function () {
+                $("form").attr("action", "/Bookings/DeleteBooking");
+            });
+
+        });
+    </script>
+}

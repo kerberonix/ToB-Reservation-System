@@ -1,0 +1,36 @@
+﻿@model IEnumerable<TobReservationSystem.Models.Booking>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<table id="coachJourneys" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Customer Id</th>
+            <th>Name</th>
+            <th>Destination</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var booking in Model)
+        {
+            <tr>
+                <td>@booking.CustomerId</td>
+                <td>@booking.Customer.Name</td>
+                <td>@booking.CoachJourney.Destination</td>
+                <td>@Html.ActionLink("View", "EditBooking", "Bookings", new { id = booking.Id }, null)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

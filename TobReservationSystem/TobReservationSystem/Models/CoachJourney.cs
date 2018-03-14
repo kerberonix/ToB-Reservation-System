@@ -19,7 +19,6 @@ namespace TobReservationSystem.Models
         [Display(Name = "Total Number of Tickets")]
         public int TotalNumberOfTickets { get; set; }
 
-        [Display(Name = "Number of Tickets")]
         public int TicketsAvailable { get; set; }
 
         [Required]
@@ -28,7 +27,7 @@ namespace TobReservationSystem.Models
 
         public DepartFromCenter DepartFromCenter { get; set; } // navigation property
 
-        [Display(Name = "Departing From")]
+        [Display(Name = "Depart From")]
         public byte DepartFromCenterId { get; set; }
 
     }
