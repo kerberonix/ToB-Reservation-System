@@ -37,7 +37,7 @@
             <tr>
                 <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
                 <td>@customer.MembershipType.Name</td>
-                <td>@Html.ActionLink("Delete", "Delete", "Customers", new { id = customer.Id }, null)</td>
+                <td>@Html.ActionLink("Btn", "Delete", "Customers", new { id = customer.Id }, new { @class = "btn-icon btn-delete" })</td>
             </tr>
         }
 

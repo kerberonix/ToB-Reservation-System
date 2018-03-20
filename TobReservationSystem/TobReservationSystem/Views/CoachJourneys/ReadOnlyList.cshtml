@@ -33,7 +33,7 @@
             <tr>
                 <td>@journey.Destination</td>
                 <td>@journey.DateOfJourney.ToLongDateString()</td>
-                <td>@Html.ActionLink("Booking", "NewBooking", "Bookings", new { id = journey.Id }, null)</td>
+                <td>@Html.ActionLink("Btn", "NewBooking", "Bookings", new { id = journey.Id }, new { @class = "btn-icon btn-booking" })</td>
             </tr>
         }
     </tbody>

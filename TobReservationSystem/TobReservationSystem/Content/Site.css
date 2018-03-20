@@ -54,3 +54,28 @@ textarea {
     display: inline-block;
     margin-left: 10px;
 }
+
+.btn-booking {
+    background: url(/Content/Images/book.png) 1px;
+}
+
+.btn-delete {
+    background: url(/Content/Images/delete.png) 1px;
+}
+
+.btn-view {
+    background: url(/Content/Images/view.png) 1px;
+}
+
+.btn-icon {
+    color: transparent;
+    padding: 4px 2px;
+    border: 1px solid;
+    border-radius: 5px;
+    opacity: 1;
+}
+
+.btn-icon:hover {
+    color: transparent;
+    opacity: 0.6;
+}

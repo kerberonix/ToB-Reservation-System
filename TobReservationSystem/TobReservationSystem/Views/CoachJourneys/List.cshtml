@@ -37,7 +37,7 @@
             <tr>
                 <td>@Html.ActionLink(journey.Destination, "Edit", "CoachJourneys", new { id = journey.Id }, null)</td>
                 <td>@journey.DateOfJourney.ToLongDateString()</td>
-                <td>@Html.ActionLink("Delete", "Delete", "CoachJourneys", new { id = journey.Id }, null) @Html.ActionLink("Booking", "NewBooking", "Bookings", new { id = journey.Id }, null)</td>
+                <td>@Html.ActionLink("Btn", "Delete", "CoachJourneys", new { id = journey.Id }, new { @class = "btn-icon btn-delete" }) @Html.ActionLink("Btn", "NewBooking", "Bookings", new { id = journey.Id }, new { @class = "btn-icon btn-booking" })</td>
             </tr>
         }
     </tbody>

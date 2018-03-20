@@ -35,7 +35,7 @@
                 <td>@booking.Customer.CustomerRefCode</td>
                 <td>@booking.Customer.Name</td>
                 <td>@booking.CoachJourney.Destination</td>
-                <td>@Html.ActionLink("View", "EditBooking", "Bookings", new { id = booking.Id }, null)</td>
+                <td>@Html.ActionLink("Btn", "EditBooking", "Bookings", new { id = booking.Id }, new { @class = "btn-icon btn-view" })</td>
             </tr>
         }
     </tbody>
