@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using TobReservationSystem.Models;
 using TobReservationSystem.ViewModels;
+using PagedList;
+using PagedList.Mvc;
 
 namespace TobReservationSystem.Controllers
 {
@@ -27,12 +29,21 @@ namespace TobReservationSystem.Controllers
         }
 
         // GET: CoachJourneys
-        public ViewResult Index()
+        public ViewResult Index(string search, int? page)
         {
-            // gets all coach journeys in the database, toList() executes the query
-            var coachJourneys = _context.CoachJourneys.ToList();
+            if (string.IsNullOrWhiteSpace(search)) // if no search was specified
+            {
+                // gets all coach journeys in the database, toList() executes the query
+                var coachJourneys = _context.CoachJourneys.ToList().ToPagedList(page ?? 1, 5);
+                return View(coachJourneys);
+            }
 
-            return View(coachJourneys);
+            var searchResult = _context.CoachJourneys
+            .Where(x => x.Destination.Contains(search))
+            .OrderBy(i => i.Destination)
+            .ToPagedList(page ?? 1, 5);
+
+            return View(searchResult);
         }
 
         // GET: CoachJourneys/New
@@ -99,6 +110,7 @@ namespace TobReservationSystem.Controllers
 
                 coachJourneyInDb.Destination = coachJourney.Destination;
                 coachJourneyInDb.DateOfJourney = coachJourney.DateOfJourney;
+                coachJourneyInDb.TicketsAvailable -= (coachJourneyInDb.TotalNumberOfTickets - coachJourney.TotalNumberOfTickets);
                 coachJourneyInDb.TotalNumberOfTickets = coachJourney.TotalNumberOfTickets;
                 coachJourneyInDb.DepartFromCenterId = coachJourney.DepartFromCenterId;
             }

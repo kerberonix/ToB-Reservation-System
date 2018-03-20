@@ -1,15 +1,27 @@
-﻿@model IEnumerable<TobReservationSystem.Models.Booking>
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<TobReservationSystem.Models.Booking>
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Bookings</h2>
+
+@using (Html.BeginForm("Index", "Bookings", FormMethod.Get))
+{
+    <div class="seach-row">
+        @Html.TextBox("search", null, new { @class = "form-control search-box", placeholder = "Search by customer reference code" })
+        <button type="submit" class="btn btn-primary btn-search">Search</button>
+    </div>
+}
 
 <table id="coachJourneys" class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th>Customer Id</th>
+            <th>Customer Reference Code</th>
             <th>Name</th>
             <th>Destination</th>
             <th>Actions</th>
@@ -20,7 +32,7 @@
         @foreach (var booking in Model)
         {
             <tr>
-                <td>@booking.CustomerId</td>
+                <td>@booking.Customer.CustomerRefCode</td>
                 <td>@booking.Customer.Name</td>
                 <td>@booking.CoachJourney.Destination</td>
                 <td>@Html.ActionLink("View", "EditBooking", "Bookings", new { id = booking.Id }, null)</td>
@@ -29,8 +41,24 @@
     </tbody>
 </table>
 
-@section scripts {
+@Html.PagedListPager(
+    Model,
+    // the 'search' variable get's its value from the value in the URL (by using the Request.QueryString method)
+    page => Url.Action("Index", new { page, search = Request.QueryString["Search"] }),
+    // optional arguments to customise ToPagedList
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true })
 
-    @Scripts.Render("~/bundles/jqueryval")
 
+@section scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            $('#search').click(
+                function () {
+                    $(this).val('');
+                });
+        });
+
+    </script>
 }

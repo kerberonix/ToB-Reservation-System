@@ -11,6 +11,10 @@
 {
     @Html.ValidationSummary(true, "Please fix the following errors.");
     <div class="form-group">
+        @Html.LabelFor(m => m.Customer.CustomerRefCode)
+        @Html.EditorFor(m => m.Customer.CustomerRefCode, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+    </div>
+    <div class="form-group">
         @Html.LabelFor(m => m.Customer.Name)
         @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Customer.Name)

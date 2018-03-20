@@ -1,4 +1,7 @@
-﻿@model IEnumerable<TobReservationSystem.Models.Customer>
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<TobReservationSystem.Models.Customer>
 
 @{
     ViewBag.Title = "Customers";
@@ -10,6 +13,14 @@
 <p>
     @Html.ActionLink("New", "New", "Customers", new { @class = "btn btn-primary" })
 </p>
+
+@using (Html.BeginForm("Index", "Customers", FormMethod.Get))
+{
+    <div class="seach-row">
+        @Html.TextBox("search", null, new { @class = "form-control search-box", placeholder = "Search by name" })
+        <button type="submit" class="btn btn-primary btn-search">Search</button>
+    </div>
+}
 
 <table class="table table-bordered table-hover">
     <thead>
@@ -23,12 +34,38 @@
 
         @foreach (var customer in Model)
         {
-         <tr>
-             <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id}, null)</td>
-             <td>@customer.MembershipType.Name</td>
-             <td>@Html.ActionLink("Delete", "Delete", "Customers", new { id = customer.Id}, null)</td>
-         </tr>
+            <tr>
+                <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
+                <td>@customer.MembershipType.Name</td>
+                <td>@Html.ActionLink("Delete", "Delete", "Customers", new { id = customer.Id }, null)</td>
+            </tr>
         }
 
     </tbody>
 </table>
+
+<!-- helper to load pagenation
+    Model: pass the model
+    page => : function to generate the page links (page is the param in the URL)
+    Url.Action : ASP.NET helper to generate links (Index: controller,    page & search: variables to retrieve from the URL to pass data to )
+    -->
+@Html.PagedListPager(
+    Model,
+    // the 'search' variable get's its value from the value in the URL (by using the Request.QueryString method)
+    page => Url.Action("Index", new { page, search = Request.QueryString["Search"] }),
+    // optional arguments to customise ToPagedList
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true })
+
+@section scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            $('#search').click(
+                function () {
+                    $(this).val('');
+                });
+        });
+
+    </script>
+}

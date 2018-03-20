@@ -19,7 +19,6 @@ namespace TobReservationSystem.Models
         public int TicketQuantity { get; set; }
 
         [Required]
-        [Display(Name = "Customer Id")]
         public Customer Customer { get; set; }  // navigation property
 
         public int CustomerId { get; set; }

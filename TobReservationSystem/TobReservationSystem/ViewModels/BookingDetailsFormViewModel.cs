@@ -20,11 +20,11 @@ namespace TobReservationSystem.ViewModels
         [Display(Name = "Date of Journey")]
         public DateTime DateOfJourney { get; set; }
 
-        [Display(Name = "Customer Id")]
-        public int CustomerId { get; set; }
-
         [Display(Name = "Customer Name")]
         public string CustomerName { get; set; }
+
+        [Display(Name = "Customer Reference Code")]
+        public string CustomerRefCode { get; set; }
 
         // this validation rule seems unable to be retrieved from the model so im setting it in the view model
         [Range(1, 10)]

@@ -5,6 +5,8 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using TobReservationSystem.Models;
 using TobReservationSystem.ViewModels;
+using PagedList;
+using PagedList.Mvc;
 
 namespace TobReservationSystem.Controllers
 {
@@ -26,14 +28,27 @@ namespace TobReservationSystem.Controllers
         }
 
         // GET: /Bookings
-        public ViewResult Index()
+        public ViewResult Index(string search, int? page)
         {
-            var booking = _context.Bookings
+            if (string.IsNullOrWhiteSpace(search))  // if no search was specified
+            {
+                var bookings = _context.Bookings
+                    .Include(c => c.Customer)
+                    .Include(c => c.CoachJourney)
+                    .ToList()
+                    .ToPagedList(page ?? 1, 5);
+
+                return View(bookings);
+            }
+
+            var searchResult = _context.Bookings
                 .Include(c => c.Customer)
                 .Include(c => c.CoachJourney)
-                .ToList();
+                .Where(x => x.Customer.CustomerRefCode.Contains(search))
+                .OrderBy(i => i.Customer.CustomerRefCode)
+                .ToPagedList(page ?? 1, 5);
 
-            return View(booking);
+            return View(searchResult);
         }
 
         // GET: /Bookings/EditBooking/1
@@ -53,11 +68,11 @@ namespace TobReservationSystem.Controllers
                 Destination = booking.CoachJourney.Destination,
                 DepartFromCenter = booking.CoachJourney.DepartFromCenter.Name,
                 DateOfJourney = booking.CoachJourney.DateOfJourney,
-                CustomerId = booking.CustomerId,
                 CustomerName = booking.Customer.Name,
                 TicketQuantity = booking.TicketQuantity,
                 DateOfBooking = booking.DateOfBooking,
-                TicketsAvailable = booking.CoachJourney.TicketsAvailable
+                TicketsAvailable = booking.CoachJourney.TicketsAvailable,
+                CustomerRefCode = booking.Customer.CustomerRefCode
             };
 
             return View("BookingDetailsForm", viewModel);
@@ -85,11 +100,11 @@ namespace TobReservationSystem.Controllers
                     Destination = bookingInDb.CoachJourney.Destination,
                     DepartFromCenter = bookingInDb.CoachJourney.DepartFromCenter.Name,
                     DateOfJourney = bookingInDb.CoachJourney.DateOfJourney,
-                    CustomerId = bookingInDb.CustomerId,
                     CustomerName = bookingInDb.Customer.Name,
                     TicketQuantity = bookingInDb.TicketQuantity,
                     DateOfBooking = bookingInDb.DateOfBooking,
-                    TicketsAvailable = bookingInDb.CoachJourney.TicketsAvailable
+                    TicketsAvailable = bookingInDb.CoachJourney.TicketsAvailable,
+                    CustomerRefCode = bookingInDb.Customer.CustomerRefCode
                 };
 
                 return View("BookingDetailsForm", viewModel);
@@ -164,8 +179,8 @@ namespace TobReservationSystem.Controllers
             // matches the CoachJourney a customer wants to make a booking for to the corresponding CoachJourney stored in the Db
             var coachJourney = _context.CoachJourneys.Single(c => c.Id == newBooking.CoachJourneyId);
 
-            // matches the customer Id provided in the POST request (in the input text box) to the corresponding customer stored in the Db
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == newBooking.CustomerId);
+            // matches the customer reference code provided in the POST request (in the input text box) to the corresponding customer stored in the Db
+            var customer = _context.Customers.SingleOrDefault(c => c.CustomerRefCode == newBooking.CustomerRefCode);
 
             // code executed if validation check fails
             if (!ModelState.IsValid)
@@ -174,10 +189,12 @@ namespace TobReservationSystem.Controllers
                 // mapping the view model properties to the model properties
                 var viewModel = new BookingFormViewModel
                 {
+                    // TODO
                     CoachJourneyId = coachJourney.Id,
-                    CustomerId = 0,
+                    CustomerId = customer.Id,
                     Destination = coachJourney.Destination,
-                    TicketQuantity = coachJourney.TicketsAvailable
+                    TicketQuantity = coachJourney.TicketsAvailable,
+                    CustomerRefCode = customer.CustomerRefCode
                 };
 
                 return View("BookingForm", viewModel);
@@ -202,12 +219,11 @@ namespace TobReservationSystem.Controllers
                 // deduct number of tickets bought from number of tickets available
                 newBooking.DeductTickets(coachJourney);
                 
-
                 // if everything was successful, add the booking to the Db
                 // mapping the view model properties to the model properties
                 var booking = new Booking
                 {
-                    CustomerId = newBooking.CustomerId,
+                    CustomerId = customer.Id, // saves the customerId in the Db NOT the ref code (Id should not be visible on the view)
                     CoachJourneyId = newBooking.CoachJourneyId,
                     DateOfBooking = DateTime.Now,
                     TicketQuantity = newBooking.TicketQuantity

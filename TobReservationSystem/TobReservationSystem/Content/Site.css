@@ -41,3 +41,16 @@ textarea {
 .form-space {
     margin-top: 20px;
 }
+
+.seach-row {
+    padding-bottom: 10px;
+    text-align: right;
+}
+.search-box {
+    display: inline-block;
+}
+
+.btn-search {
+    display: inline-block;
+    margin-left: 10px;
+}

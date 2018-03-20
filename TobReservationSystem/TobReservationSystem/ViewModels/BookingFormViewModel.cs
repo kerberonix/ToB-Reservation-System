@@ -24,6 +24,9 @@ namespace TobReservationSystem.ViewModels
         [Display(Name = "Departing From")]
         public string DepartFromCenter { get; set; }
 
+        [Display(Name = "Customer Reference Code")]
+        public string CustomerRefCode { get; set; }
+
 
         public int DeductTickets(CoachJourney coachJourney)
         {

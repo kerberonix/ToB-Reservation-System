@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using TobReservationSystem.Models;
 using TobReservationSystem.ViewModels;
+using PagedList;
+using PagedList.Mvc;
 
 namespace TobReservationSystem.Controllers
 {
@@ -27,12 +29,24 @@ namespace TobReservationSystem.Controllers
         }
 
         // GET: Customers
-        public ViewResult Index()
+        public ViewResult Index(string search, int? page)
         {
-            // gets all customers in the database, toList() executes the query
-            var customers = _context.Customers.Include(c => c.MembershipType).ToList();
+            if (string.IsNullOrWhiteSpace(search)) // if no search was specified
+            {
+                // dislay all customers
+                // gets all customers in the database, toList() executes the query, toPagedList returns a paged list of all the customers executed by the query
+                var customers = _context.Customers.Include(c => c.MembershipType).ToList().ToPagedList(page ?? 1, 5);
+                return View(customers);
+            }
 
-            return View(customers);
+            var searchResult = _context.Customers
+                .Include(c => c.MembershipType)
+                .Where(x => x.Name.Contains(search))
+                .OrderBy(i => i.Name) // ToPagedList requires an OrderBy in the expression
+                .ToPagedList(page ?? 1, 5); // page ?? 1: if page has value of null, use value of 1, else use value stored in page
+                                            // 5: the number of records to display on the page
+
+            return View(searchResult);
         }
 
         // GET: Customers/New
@@ -88,7 +102,10 @@ namespace TobReservationSystem.Controllers
 
             // a customer that does not exist will have a default Id of 0
             if (customer.Id == 0)
+            {
+                customer.CustomerRefCode = customer.GenerateCustomerRefCode();
                 _context.Customers.Add(customer);
+            }
 
             else
             {
