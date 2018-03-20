@@ -26,6 +26,7 @@
         @Html.EditorFor(m => m.TotalNumberOfTickets, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
     </div>
     @Html.HiddenFor(m => m.Id)
+    @Html.AntiForgeryToken()
     <button type="submit" class="btn btn-primary">Delete</button>
 }
 

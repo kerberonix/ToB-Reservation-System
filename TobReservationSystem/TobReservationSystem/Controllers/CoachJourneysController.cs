@@ -136,6 +136,7 @@ namespace TobReservationSystem.Controllers
         // POST: /CoachJourneys/Delete/2
         // the action which peforms the actual deletion of the record
         [HttpPost, ActionName("Delete")] // renames the action so routing works
+        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             var coachJourneyInDb = _context.CoachJourneys.SingleOrDefault(c => c.Id == id);

@@ -23,5 +23,6 @@
 
     <!-- Hidden Fields -->
     @Html.HiddenFor(m => m.Id)
+    @Html.AntiForgeryToken()
     <button type="submit" class="btn btn-primary">Delete</button>
 }

@@ -137,6 +137,7 @@ namespace TobReservationSystem.Controllers
         // POST: /Customers/Delete/2
         // the action which peforms the actual deletion of the record
         [HttpPost, ActionName("Delete")] // renames the action so routing works, because the name of the action the form is attached to is the Delete action "Delete"
+        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
