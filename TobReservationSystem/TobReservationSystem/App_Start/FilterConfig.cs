@@ -7,7 +7,8 @@ namespace TobReservationSystem
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Add(new HandleErrorAttribute()); // redirects user to error page when action throws an error
+            filters.Add(new AuthorizeAttribute());
         }
     }
 }

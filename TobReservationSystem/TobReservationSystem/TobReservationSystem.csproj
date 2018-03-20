@@ -257,6 +257,10 @@
     <Compile Include="Migrations\201803152243385_AddCustomerRefCodeProperty.Designer.cs">
       <DependentUpon>201803152243385_AddCustomerRefCodeProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803201508262_SeedUsers.cs" />
+    <Compile Include="Migrations\201803201508262_SeedUsers.Designer.cs">
+      <DependentUpon>201803201508262_SeedUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Booking.cs" />
@@ -266,12 +270,15 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MembershipType.cs" />
+    <Compile Include="Models\RoleName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BookingDetailsFormViewModel.cs" />
     <Compile Include="ViewModels\BookingFormViewModel.cs" />
     <Compile Include="ViewModels\CoachJourneyFormViewModel.cs" />
     <Compile Include="ViewModels\CustomerFormViewModel.cs" />
+    <Compile Include="ViewModels\ExternalLoginConfirmationViewModel.cs" />
+    <Compile Include="ViewModels\RegisterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -335,7 +342,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
-    <Content Include="Views\CoachJourneys\Index.cshtml" />
+    <Content Include="Views\CoachJourneys\List.cshtml" />
     <Content Include="Views\CoachJourneys\CoachJourneyForm.cshtml" />
     <Content Include="Views\CoachJourneys\Delete.cshtml" />
     <Content Include="Views\Customers\CustomerForm.cshtml" />
@@ -343,6 +350,7 @@
     <Content Include="Views\Bookings\BookingForm.cshtml" />
     <Content Include="Views\Bookings\Index.cshtml" />
     <Content Include="Views\Bookings\BookingDetailsForm.cshtml" />
+    <Content Include="Views\CoachJourneys\ReadOnlyList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -393,6 +401,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803152243385_AddCustomerRefCodeProperty.resx">
       <DependentUpon>201803152243385_AddCustomerRefCodeProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803201508262_SeedUsers.resx">
+      <DependentUpon>201803201508262_SeedUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

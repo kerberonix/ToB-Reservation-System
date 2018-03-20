@@ -31,11 +31,17 @@ namespace TobReservationSystem.Controllers
         // GET: CoachJourneys
         public ViewResult Index(string search, int? page)
         {
+
             if (string.IsNullOrWhiteSpace(search)) // if no search was specified
             {
                 // gets all coach journeys in the database, toList() executes the query
                 var coachJourneys = _context.CoachJourneys.ToList().ToPagedList(page ?? 1, 5);
-                return View(coachJourneys);
+
+                // checks if the user is signed in as an admin
+                if (User.IsInRole("CanManageCoachJourneys"))
+                    return View("List", coachJourneys);
+
+                return View("ReadOnlyList", coachJourneys);
             }
 
             var searchResult = _context.CoachJourneys
@@ -43,10 +49,15 @@ namespace TobReservationSystem.Controllers
             .OrderBy(i => i.Destination)
             .ToPagedList(page ?? 1, 5);
 
-            return View(searchResult);
+            // checks if the user is signed in as an admin
+            if (User.IsInRole("CanManageCoachJourneys"))
+                return View("List", searchResult);
+
+            return View("ReadOnlyList", searchResult);
         }
 
         // GET: CoachJourneys/New
+        [Authorize(Roles = RoleName.CanManageCoachJourneys)]
         public ViewResult New()
         {
             var departFromCenters = _context.DepartFromCenters.ToList();
@@ -60,6 +71,7 @@ namespace TobReservationSystem.Controllers
         }
 
         // GET: CoachJourneys/Edit/2
+        [Authorize(Roles = RoleName.CanManageCoachJourneys)]
         public ActionResult Edit(int id)
         {
             // gets the coach journeys details by accessing it's id
@@ -82,6 +94,7 @@ namespace TobReservationSystem.Controllers
         // POST: new record / update existing record
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.CanManageCoachJourneys)]
         public ActionResult Save(CoachJourney coachJourney)
         {
             // validation check on the data entered
@@ -122,6 +135,7 @@ namespace TobReservationSystem.Controllers
 
         // GET: /CoachJourneys/Delete/2
         // returns a view of the coach journey, where a HttpPost submit (button) handles the deletion (see Delete.cshtml)
+        [Authorize(Roles = RoleName.CanManageCoachJourneys)]
         public ActionResult Delete(int id)
         {
             var coachJourneyInDb = _context.CoachJourneys.Include(c => c.DepartFromCenter).SingleOrDefault(c => c.Id == id);
@@ -137,6 +151,7 @@ namespace TobReservationSystem.Controllers
         // the action which peforms the actual deletion of the record
         [HttpPost, ActionName("Delete")] // renames the action so routing works
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.CanManageCoachJourneys)]
         public ActionResult DeleteConfirmed(int id)
         {
             var coachJourneyInDb = _context.CoachJourneys.SingleOrDefault(c => c.Id == id);

@@ -1,0 +1,62 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<TobReservationSystem.Models.CoachJourney>
+
+@{
+    ViewBag.Title = "Coach Journeys";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Coach Journeys</h2>
+
+@using (Html.BeginForm("Index", "CoachJourneys", FormMethod.Get))
+{
+    <div class="seach-row">
+        @Html.TextBox("search", null, new { @class = "form-control search-box", placeholder = "Search by journey name" })
+        <button type="submit" class="btn btn-primary btn-search">Search</button>
+    </div>
+}
+
+<table id="coachJourneys" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Destination</th>
+            <th>Date of Journey</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var journey in Model)
+        {
+            <tr>
+                <td>@journey.Destination</td>
+                <td>@journey.DateOfJourney.ToLongDateString()</td>
+                <td>@Html.ActionLink("Booking", "NewBooking", "Bookings", new { id = journey.Id }, null)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager(
+    Model,
+    // the 'search' variable get's its value from the value in the URL (by using the Request.QueryString method)
+    page => Url.Action("Index", new { page, search = Request.QueryString["Search"] }),
+    // optional arguments to customise ToPagedList
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true })
+
+
+@section scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            $('#search').click(
+                function () {
+                    $(this).val('');
+                });
+        });
+
+    </script>
+}
