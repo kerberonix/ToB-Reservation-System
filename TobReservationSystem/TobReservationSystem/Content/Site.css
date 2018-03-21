@@ -79,3 +79,22 @@ textarea {
     color: transparent;
     opacity: 0.6;
 }
+
+@media only screen and (max-width: 767px) {
+
+    h2 { font-size: 24px; }
+
+    .search-box { width: 40%; }
+
+    .btn { padding: 5px 7px; }
+
+    .btn-icon { display: inline-block; }
+
+    .btn-delete { margin-bottom: 4px; }
+
+    .booking-details-container {
+        margin-top: 20px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 45px;
+    }
+}
