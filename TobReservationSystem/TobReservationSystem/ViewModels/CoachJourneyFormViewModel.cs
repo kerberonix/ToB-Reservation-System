@@ -10,5 +10,16 @@ namespace TobReservationSystem.ViewModels
     {
         public CoachJourney CoachJourney { get; set; }
         public IEnumerable<DepartFromCenter> DepartFromCenters { get; set; }
+
+        public string Title
+        {
+            get
+            {
+                if (CoachJourney != null && CoachJourney.Id != 0)
+                    return "Edit Journey";
+
+                return "New Journey";
+            }
+        }
     }
 }

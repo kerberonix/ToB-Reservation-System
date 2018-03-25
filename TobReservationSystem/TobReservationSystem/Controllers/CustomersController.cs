@@ -36,17 +36,17 @@ namespace TobReservationSystem.Controllers
                 // dislay all customers
                 // gets all customers in the database, toList() executes the query, toPagedList returns a paged list of all the customers executed by the query
                 var customers = _context.Customers.Include(c => c.MembershipType).ToList().ToPagedList(page ?? 1, 5);
-                return View(customers);
+                return View(customers); // return the list of all customers
             }
 
-            var searchResult = _context.Customers
+            var searchResult = _context.Customers // else a search is conducted
                 .Include(c => c.MembershipType)
                 .Where(x => x.Name.Contains(search))
                 .OrderBy(i => i.Name) // ToPagedList requires an OrderBy in the expression
                 .ToPagedList(page ?? 1, 5); // page ?? 1: if page has value of null, use value of 1, else use value stored in page
                                             // 5: the number of records to display on the page
 
-            return View(searchResult);
+            return View(searchResult);  // return a list of seach items
         }
 
         // GET: Customers/New
@@ -63,9 +63,10 @@ namespace TobReservationSystem.Controllers
         }
 
         // GET: Customers/Edit/2
+        // returns a view of the customers form (see CustomerForm.cshtml)
         public ActionResult Edit(int id)
         {
-            // gets the customer details by accessing it's id
+            // gets the customers details by matching its id to the id passed in the URL
             var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customerInDb == null)
@@ -74,6 +75,7 @@ namespace TobReservationSystem.Controllers
             // gets the list of membership types and executes the query
             var membershipTypes = _context.MembershipTypes.ToList();
 
+            // mapping the data to the view from the db
             var viewModel = new CustomerFormViewModel
             {
                 Customer = customerInDb,
@@ -82,15 +84,16 @@ namespace TobReservationSystem.Controllers
 
             return View("CustomerForm", viewModel);
         }
-
+        // POST: new record / update existing record
+        // the action which peforms the actual POST request to add a new customer to the database (performed when submit button is pressed)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)
         {
-            // validation check on the data entered
+            // code executed if validation check fails
             if (!ModelState.IsValid) // executes if data fails to meet validation requirements
             {
-                // if the validation fails we need to return the data which was entered before validation was checked back into the form
+                // mapping the data to the view from the db (the data is reset to the data in the db if validation failed)
                 var viewModel = new CustomerFormViewModel
                 {
                     Customer = customer,
@@ -101,6 +104,7 @@ namespace TobReservationSystem.Controllers
             }
 
             // a customer that does not exist will have a default Id of 0
+            // adds a new customer (which was created by the POST request) to the db
             if (customer.Id == 0)
             {
                 customer.CustomerRefCode = customer.GenerateCustomerRefCode();
@@ -109,7 +113,8 @@ namespace TobReservationSystem.Controllers
 
             else
             {
-                // updates the properties in the database
+                // updates the exiting customer in the db
+                // updates the individual properties and overwrites the previous entry in the db
                 var customerInDb = _context.Customers.Single(c => c.Id == customer.Id);
 
                 customerInDb.Name = customer.Name;
@@ -124,7 +129,7 @@ namespace TobReservationSystem.Controllers
         }
 
         // GET: /Customers/Delete/2
-        // returns a view of the customer, where a HttpPost submit (button) handles the deletion (see Delete.cshtml)
+        // returns a view of the customer, where a HttpPost request (submit button) on the view handles the actual deletion
         public ActionResult Delete(int id)
         {
             var customerInDb = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);

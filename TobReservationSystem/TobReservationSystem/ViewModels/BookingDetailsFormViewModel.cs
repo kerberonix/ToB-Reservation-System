@@ -43,15 +43,15 @@ namespace TobReservationSystem.ViewModels
         public int UpdateAvailableTickets(Booking bookingInDb)
         {
             // if some tickets are refunded
-           if (bookingInDb.TicketQuantity > TicketQuantity)
-                 bookingInDb.CoachJourney.TicketsAvailable += (bookingInDb.TicketQuantity - TicketQuantity);
+            if (bookingInDb.TicketQuantity > TicketQuantity)
+                bookingInDb.CoachJourney.TicketsAvailable += (bookingInDb.TicketQuantity - TicketQuantity);
 
             // if more tickets are bought
             else if (bookingInDb.TicketQuantity < TicketQuantity)
-                 bookingInDb.CoachJourney.TicketsAvailable -= (TicketQuantity - bookingInDb.TicketQuantity);
+                bookingInDb.CoachJourney.TicketsAvailable -= (TicketQuantity - bookingInDb.TicketQuantity);
 
-           // checks if more tickets are bought that are available
-           if (bookingInDb.CoachJourney.TicketsAvailable < 0)
+            // checks if more tickets are bought that are available
+            if (bookingInDb.CoachJourney.TicketsAvailable < 0)
                 return bookingInDb.CoachJourney.TicketsAvailable;
 
             return bookingInDb.TicketQuantity = TicketQuantity;

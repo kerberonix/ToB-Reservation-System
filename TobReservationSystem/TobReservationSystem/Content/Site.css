@@ -93,7 +93,6 @@ textarea {
     .btn-delete { margin-bottom: 4px; }
 
     .booking-details-container {
-        margin-top: 20px;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: auto 45px;
     }

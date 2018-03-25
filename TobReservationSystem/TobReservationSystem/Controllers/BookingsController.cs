@@ -38,17 +38,17 @@ namespace TobReservationSystem.Controllers
                     .ToList()
                     .ToPagedList(page ?? 1, 5);
 
-                return View(bookings);
+                return View(bookings); // return the list of all bookings
             }
 
-            var searchResult = _context.Bookings
+            var searchResult = _context.Bookings // else a search is conducted
                 .Include(c => c.Customer)
                 .Include(c => c.CoachJourney)
                 .Where(x => x.Customer.CustomerRefCode.Contains(search))
                 .OrderBy(i => i.Customer.CustomerRefCode)
                 .ToPagedList(page ?? 1, 5);
 
-            return View(searchResult);
+            return View(searchResult); // return a list of seach items
         }
 
         // GET: /Bookings/EditBooking/1
@@ -63,6 +63,7 @@ namespace TobReservationSystem.Controllers
             if (booking == null)
                 return HttpNotFound();
 
+            // mapping the data to the view from the db
             var viewModel = new BookingDetailsFormViewModel
             {
                 Destination = booking.CoachJourney.Destination,
@@ -85,16 +86,16 @@ namespace TobReservationSystem.Controllers
         public ActionResult SaveBooking(BookingDetailsFormViewModel bookingDetails)
         {
 
-           var bookingInDb = _context.Bookings
-                .Include("CoachJourney.DepartFromCenter")
-                .Include(c => c.Customer)
-                .Single(c => c.Id == bookingDetails.Id);
+            var bookingInDb = _context.Bookings
+                 .Include("CoachJourney.DepartFromCenter")
+                 .Include(c => c.Customer)
+                 .Single(c => c.Id == bookingDetails.Id);
 
             // code executed if validation check fails
             if (!ModelState.IsValid)
             {
                 // resets the data on the view
-                // mapping the view model properties to the model properties
+                // mapping the data to the view from the db (the data is reset to the data in the db if validation failed)
                 var viewModel = new BookingDetailsFormViewModel
                 {
                     Destination = bookingInDb.CoachJourney.Destination,
@@ -110,7 +111,7 @@ namespace TobReservationSystem.Controllers
                 return View("BookingDetailsForm", viewModel);
             }
 
-            else
+            else // executed if validation check passes
             {
                 // *Code block to manage ticket availability*
                 // updates the number of tickets on sale in Coachjourneys
@@ -119,6 +120,7 @@ namespace TobReservationSystem.Controllers
                 if (bookingInDb.TicketQuantity < 0)
                     return Content("There are less tickets available than the amount you are trying to buy.");
 
+                // saving data to the db
                 _context.SaveChanges();
 
             }
@@ -139,7 +141,7 @@ namespace TobReservationSystem.Controllers
             var coachJourney = _context.CoachJourneys.Single(c => c.Id == booking.CoachJourneyId);
             booking.ReturnTickets();
 
-            // remove it
+            // remove it from the db
             _context.Bookings.Remove(booking);
             _context.SaveChanges();
 
@@ -150,7 +152,7 @@ namespace TobReservationSystem.Controllers
         // returns a view of the booking form (see BookingForm.cshtml)
         public ActionResult NewBooking(int id)
         {
-            // gets the CoachJourney from the Db that a booking is being made to
+            // gets the CoachJourney from the db that a booking is being made to
             var coachJourneyInDb = _context.CoachJourneys
                 .Include(c => c.DepartFromCenter)
                 .SingleOrDefault(c => c.Id == id);
@@ -158,6 +160,7 @@ namespace TobReservationSystem.Controllers
             if (coachJourneyInDb == null)
                 return HttpNotFound();
 
+            // mapping the data to the view from the db (to make a new booking, dat about theCochJourney for that booking needs to be retrieved from the db)
             // We don't need to pass the customerId in the viewModel here, as we have not specified what customer we want to make a booking for yet
             var viewModel = new BookingFormViewModel
             {
@@ -176,7 +179,7 @@ namespace TobReservationSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SaveNewBooking(BookingFormViewModel newBooking)
         {
-            // matches the CoachJourney a customer wants to make a booking for to the corresponding CoachJourney stored in the Db
+            // matches the coachJourneyId to the coachJourneyId stored in the booking table to get the correct coachJourney details (this was mapped in the New action above)
             var coachJourney = _context.CoachJourneys.Single(c => c.Id == newBooking.CoachJourneyId);
 
             // matches the customer reference code provided in the POST request (in the input text box) to the corresponding customer stored in the Db
@@ -186,10 +189,9 @@ namespace TobReservationSystem.Controllers
             if (!ModelState.IsValid)
             {
                 // resets the data on the view
-                // mapping the view model properties to the model properties
+                // mapping the data to the view from the db (the data is reset to the data in the db if validation failed)
                 var viewModel = new BookingFormViewModel
                 {
-                    // TODO
                     CoachJourneyId = coachJourney.Id,
                     CustomerId = customer.Id,
                     Destination = coachJourney.Destination,
@@ -218,9 +220,9 @@ namespace TobReservationSystem.Controllers
 
                 // deduct number of tickets bought from number of tickets available
                 newBooking.DeductTickets(coachJourney);
-                
+
                 // if everything was successful, add the booking to the Db
-                // mapping the view model properties to the model properties
+                // mapping the model obtained in the POST request to the db properties
                 var booking = new Booking
                 {
                     CustomerId = customer.Id, // saves the customerId in the Db NOT the ref code (Id should not be visible on the view)
@@ -229,6 +231,7 @@ namespace TobReservationSystem.Controllers
                     TicketQuantity = newBooking.TicketQuantity
                 };
 
+                // add the booking containing the mapped model from the POST request to the db
                 _context.Bookings.Add(booking);
                 _context.SaveChanges();
 

@@ -41,19 +41,19 @@ namespace TobReservationSystem.Controllers
                 if (User.IsInRole("CanManageCoachJourneys"))
                     return View("List", coachJourneys);
 
-                return View("ReadOnlyList", coachJourneys);
+                return View("ReadOnlyList", coachJourneys); // return the list of all coachJourneys
             }
 
-            var searchResult = _context.CoachJourneys
+            var searchResult = _context.CoachJourneys // else a search is conducted
             .Where(x => x.Destination.Contains(search))
             .OrderBy(i => i.Destination)
             .ToPagedList(page ?? 1, 5);
 
             // checks if the user is signed in as an admin
             if (User.IsInRole("CanManageCoachJourneys"))
-                return View("List", searchResult);
+                return View("List", searchResult); // return a list of seach items with the admin view
 
-            return View("ReadOnlyList", searchResult);
+            return View("ReadOnlyList", searchResult); // return a list of seach items with the regular view
         }
 
         // GET: CoachJourneys/New
@@ -61,7 +61,7 @@ namespace TobReservationSystem.Controllers
         public ViewResult New()
         {
             var departFromCenters = _context.DepartFromCenters.ToList();
-        
+
             var viewModel = new CoachJourneyFormViewModel
             {
                 DepartFromCenters = departFromCenters
@@ -71,10 +71,11 @@ namespace TobReservationSystem.Controllers
         }
 
         // GET: CoachJourneys/Edit/2
+        // returns a view of the coachJourney form (see CoachJourneyForm.cshtml)
         [Authorize(Roles = RoleName.CanManageCoachJourneys)]
         public ActionResult Edit(int id)
         {
-            // gets the coach journeys details by accessing it's id
+            // gets the coach journeys details by matching its id to the id passed in the URL
             var coachJourneyInDb = _context.CoachJourneys.SingleOrDefault(c => c.Id == id);
 
             if (coachJourneyInDb == null)
@@ -83,6 +84,7 @@ namespace TobReservationSystem.Controllers
             // gets the list of departing from centers and executes the query
             var departFromCenters = _context.DepartFromCenters.ToList();
 
+            // mapping the data to the view from the db
             var viewModel = new CoachJourneyFormViewModel
             {
                 CoachJourney = coachJourneyInDb,
@@ -92,14 +94,16 @@ namespace TobReservationSystem.Controllers
         }
 
         // POST: new record / update existing record
+        // the action which peforms the actual POST request to add a new CoachJourney to the database (performed when submit button is pressed)
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = RoleName.CanManageCoachJourneys)]
         public ActionResult Save(CoachJourney coachJourney)
         {
-            // validation check on the data entered
-            if (!ModelState.IsValid) // executes if data fails to meet validation requirements
+            // code executed if validation check fails
+            if (!ModelState.IsValid)
             {
+                // mapping the data to the view from the db (the data is reset to the data in the db if validation failed)
                 var viewModel = new CoachJourneyFormViewModel
                 {
                     CoachJourney = coachJourney,
@@ -109,6 +113,7 @@ namespace TobReservationSystem.Controllers
                 return View("CoachJourneyForm", viewModel);
             }
             // a coach journey that does not exist will have a default Id of 0
+            // adds a new coachJourney (which was created by the POST request) to the db
             if (coachJourney.Id == 0)
             {
                 coachJourney.TicketsAvailable = coachJourney.TotalNumberOfTickets;
@@ -118,7 +123,8 @@ namespace TobReservationSystem.Controllers
 
             else
             {
-                // updates the properties in the database
+                // updates the exiting coachJourney in the db
+                // updates the individual properties and overwrites the previous entry in the db
                 var coachJourneyInDb = _context.CoachJourneys.Single(c => c.Id == coachJourney.Id);
 
                 coachJourneyInDb.Destination = coachJourney.Destination;
@@ -134,7 +140,7 @@ namespace TobReservationSystem.Controllers
         }
 
         // GET: /CoachJourneys/Delete/2
-        // returns a view of the coach journey, where a HttpPost submit (button) handles the deletion (see Delete.cshtml)
+        // returns a view of the coach journey, where a HttpPost request (submit button) on the view handles the actual deletion
         [Authorize(Roles = RoleName.CanManageCoachJourneys)]
         public ActionResult Delete(int id)
         {

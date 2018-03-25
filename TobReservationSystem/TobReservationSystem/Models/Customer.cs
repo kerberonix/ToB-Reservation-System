@@ -9,7 +9,7 @@ namespace TobReservationSystem.Models
 {
     public class Customer
     {
-        [Display (Name = "Customer Id")]
+        [Display(Name = "Customer Id")]
         public int Id { get; set; }
 
         [Required]
