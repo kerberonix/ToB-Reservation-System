@@ -12,17 +12,17 @@
     @Html.ValidationSummary(true, "Please fix the following errors.")
     <div class="booking-details-container">
         @Html.LabelFor(m => m.Destination)
-        @Html.DisplayFor(m => m.Destination)
+        @Model.Destination
         @Html.LabelFor(m => m.DepartFromCenter)
-        @Html.DisplayFor(m => m.DepartFromCenter)
+        @Model.DepartFromCenter
         @Html.LabelFor(m => m.DateOfJourney)
-        @Html.DisplayFor(m => m.DateOfJourney)
+        @Model.DateOfJourney.ToLongDateString()
         @Html.LabelFor(m => m.CustomerRefCode)
-        @Html.DisplayFor(m => m.CustomerRefCode)
+        @Model.CustomerRefCode
         @Html.LabelFor(m => m.CustomerName)
-        @Html.DisplayFor(m => m.CustomerName)
+        @Model.CustomerName
         @Html.LabelFor(m => m.DateOfBooking)
-        @Html.DisplayFor(m => m.DateOfBooking)
+        @Model.DateOfBooking.ToLongDateString()
     </div>
     <div class="booking-details-container">
         @Html.LabelFor(m => m.TicketsAvailable)

@@ -75,6 +75,7 @@ textarea {
     opacity: 1;
 }
 
+.btn-icon:active,
 .btn-icon:hover {
     color: transparent;
     opacity: 0.6;

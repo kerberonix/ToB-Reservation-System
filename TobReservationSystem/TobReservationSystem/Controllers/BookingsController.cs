@@ -203,20 +203,18 @@ namespace TobReservationSystem.Controllers
             }
 
             if (customer == null)
-            {
-                return Content("That customer Id does not exist.");
-            }
+                return new HttpStatusCodeResult(404, "Customer Id Not Found");
 
             else
             {
                 // *Code block to manage ticket availability*
                 // when there are no tickets left
                 if (coachJourney.TicketsAvailable == 0)
-                    return Content("There are no tickets left.");
+                    throw new Exception("no tickets available");
 
                 // when more tickets are attempted to be bought than are available
                 else if (coachJourney.TicketsAvailable < newBooking.TicketQuantity)
-                    return Content("There are only " + coachJourney.TicketsAvailable + " tickets left, buy less.");
+                    throw new Exception("notenough tickets available");
 
                 // deduct number of tickets bought from number of tickets available
                 newBooking.DeductTickets(coachJourney);
