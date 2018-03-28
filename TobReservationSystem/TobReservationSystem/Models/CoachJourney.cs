@@ -19,6 +19,7 @@ namespace TobReservationSystem.Models
         [Display(Name = "Total Number of Tickets")]
         public int TotalNumberOfTickets { get; set; }
 
+        [Display(Name = "Tickets Available")]
         public int TicketsAvailable { get; set; }
 
         [Required]

@@ -118,8 +118,7 @@ namespace TobReservationSystem.Controllers
                 bookingInDb.TicketQuantity = bookingDetails.UpdateAvailableTickets(bookingInDb);
 
                 if (bookingInDb.TicketQuantity < 0)
-                    return Content("There are less tickets available than the amount you are trying to buy.");
-
+                    throw new Exception("not enough tickets available");
                 // saving data to the db
                 _context.SaveChanges();
 
@@ -166,7 +165,8 @@ namespace TobReservationSystem.Controllers
             {
                 CoachJourneyId = coachJourneyInDb.Id,
                 Destination = coachJourneyInDb.Destination,
-                TicketQuantity = coachJourneyInDb.TicketsAvailable,
+                TicketQuantity = 1,
+                TicketsAvailable = coachJourneyInDb.TicketsAvailable,
                 DepartFromCenter = coachJourneyInDb.DepartFromCenter.Name
             };
 
@@ -195,7 +195,7 @@ namespace TobReservationSystem.Controllers
                     CoachJourneyId = coachJourney.Id,
                     CustomerId = customer.Id,
                     Destination = coachJourney.Destination,
-                    TicketQuantity = coachJourney.TicketsAvailable,
+                    TicketQuantity = 1,
                     CustomerRefCode = customer.CustomerRefCode
                 };
 
@@ -214,7 +214,7 @@ namespace TobReservationSystem.Controllers
 
                 // when more tickets are attempted to be bought than are available
                 else if (coachJourney.TicketsAvailable < newBooking.TicketQuantity)
-                    throw new Exception("notenough tickets available");
+                    throw new Exception("not enough tickets available");
 
                 // deduct number of tickets bought from number of tickets available
                 newBooking.DeductTickets(coachJourney);

@@ -29,6 +29,10 @@
         @Html.DropDownListFor(m => m.TicketQuantity, Enumerable.Range(1, 10).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.TicketQuantity)
     </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TicketsAvailable)
+        @Html.EditorFor(m => m.TicketsAvailable, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+    </div>
     <!-- Hidden Fields -->
     @Html.HiddenFor(m => m.CoachJourneyId)
     @Html.AntiForgeryToken()

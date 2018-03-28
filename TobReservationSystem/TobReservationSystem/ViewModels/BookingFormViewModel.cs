@@ -21,6 +21,9 @@ namespace TobReservationSystem.ViewModels
         [Display(Name = "Ticket Quantity")]
         public int TicketQuantity { get; set; }
 
+        [Display(Name = "Tickets Available")]
+        public int TicketsAvailable { get; set; }
+
         [Display(Name = "Departing From")]
         public string DepartFromCenter { get; set; }
 
