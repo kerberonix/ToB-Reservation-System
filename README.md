@@ -20,7 +20,7 @@ password:
 
 NOTE: I am currently developing a very similar application with a focus on client side development
 
-see repository: WebApiApplication1
+see repository: https://github.com/kerberonix/Web-Api-Application1
 
 features:
 Simple APIs to provide RESTful services instead of MVC controllers
