@@ -11,12 +11,12 @@ Try out the application:
 http://tobreservationsystemdemoapp.azurewebsites.net/
 
 Admin login: 
-username:
-password:
+admin username: admin@tob.com
+admin password: Adminpassword1@
 
 guest login:
-username:
-password:
+guest username: guest@tob.com
+guest password: Password1@
 
 NOTE: I am currently developing a very similar application with a focus on client side development
 
